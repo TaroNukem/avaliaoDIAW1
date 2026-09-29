@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Candidatos TSE</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<div class="barra">
+    <h1>Candidatos TSE</h1>
+</div>
+
+<form method="get" th:action="@{/}">
+
+    <input type="text" name="texto"
+           placeholder="Pesquisar"
+           th:value="${textoSelecionado}">
+
+    <select name="cargo">
+        <option value="">Todos os cargos</option>
+
+        <option th:each="c : ${cargos}"
+                th:value="${c}"
+                th:text="${c}"
+                th:selected="${c == cargoSelecionado}">
+        </option>
+    </select>
+
+    <select name="partido">
+        <option value="">Todos os partidos</option>
+
+        <option th:each="p : ${partidos}"
+                th:value="${p}"
+                th:text="${p}"
+                th:selected="${p == partidoSelecionado}">
+        </option>
+    </select>
+
+    <button class="filtar"type="submit">Filtrar</button>
+    <a th:href="@{/}">Limpar</a>
+
+</form>
+
+<p th:if="${candidatos.isEmpty()}">
+    Nenhum candidato encontrado.
+</p>
+
+<div class="grade-candidatos">
+
+    <div class="card" th:each="cand : ${candidatos}">
+
+        <img th:src="@{'/images/candidatos/' + ${cand.nomeArquivoFoto}}"
+             th:alt="${cand.nomeUrna}"
+             class="foto-candidato">
+        <h2 th:text="${cand.nomeUrna}"></h2>
+        <p th:text="'Número: ' + ${cand.nrCandidato}"></p>
+        <p th:text="'Cargo: ' + ${cand.cargo}"></p>
+        <p th:text="'Partido: ' + ${cand.siglaPartido}"></p>
+        <p th:if="${cand.idade > 0}"
+           th:text="'Idade: ' + ${cand.idade}"></p>
+        <p th:if="${cand.ocupacao}"
+           th:text="'Ocupação: ' + ${cand.ocupacao}"></p>
+        <p th:if="${cand.grauInstrucao}"
+           th:text="'Escolaridade: ' + ${cand.grauInstrucao}"></p>
+    </div>
+
+</div>
+
+</body>
+</html>
